@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button";
 import InputField from "../../components/login - signup/components/InputField";
 import { isEmail, isEmpty } from "validator";
 import SignUpModal from "../../components/login - signup/components/SignUpModal";
-import { setAuth } from "../../redux/slices/AuthSlice";
+import { setAuth, setName } from "../../redux/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch } from "react-redux/es/exports";
 
 export default function LoginSignup() {
   const dispatch = useDispatch();
@@ -15,14 +15,31 @@ export default function LoginSignup() {
   const [password, setPassword] = useState("");
   const [emailErrors, setEmailErrors] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState(false);
-  const [showModal, setShowModal] = useState("invisible");
-  const [message, setMessage] = useState("");
+  const [showModal, setShowModal] = useState("modal-container-invisible");
+  const [message, setMessage] = useState(null);
+  const [expand, setExpand] = useState("modal-fg-invisible");
+
+  const capitalizeString = (string) => {
+    let strings = string.split(" ");
+    let name = strings[0];
+    const _name = name.charAt(0).toUpperCase() + name.slice(1);
+
+    return _name;
+  };
+
+  const removeErrorMessages = () => {
+    if (emailErrors !== false) setEmailErrors(false);
+    if (passwordErrors !== false) setPasswordErrors(false);
+    if (message !== null) setMessage(null);
+  };
 
   const handleEmailChange = (event) => {
+    removeErrorMessages();
     setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
+    removeErrorMessages();
     setPassword(event.target.value);
   };
 
@@ -51,8 +68,13 @@ export default function LoginSignup() {
   };
 
   const toggleModal = () => {
-    if (showModal === "invisible") setShowModal("");
-    else setShowModal("invisible");
+    if (showModal === "modal-container-invisible") {
+      setShowModal("modal-container-visible");
+      setExpand("modal-fg-visible");
+    } else {
+      setExpand("modal-fg-invisible");
+      setShowModal("modal-container-invisible");
+    }
   };
 
   const login = (email, password) => {
@@ -68,19 +90,23 @@ export default function LoginSignup() {
         },
         body: JSON.stringify(data),
       })
-        .then((res) => {
-          if (res.status != 200) {
-            let data = res.json();
+        .then(async (res) => {
+          if (res.status !== 200) {
+            let data = await res.json();
             setMessage(data.message);
+            return null;
           } else {
             return res.json();
           }
         })
         .then((data) => {
-          if (data.token) {
+          if (data) {
             localStorage.setItem("token", data.token);
             dispatch(setAuth(true));
+            dispatch(setName(capitalizeString(data.name)));
             navigate("/");
+          } else {
+            throw Error("No token");
           }
         })
         .catch((error) => {
@@ -92,8 +118,12 @@ export default function LoginSignup() {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-10">
-      <SignUpModal toggleModal={toggleModal} visible={showModal}></SignUpModal>
+    <div className="fade-in grid lg:grid-cols-2 gap-10">
+      <SignUpModal
+        expand={expand}
+        toggleModal={toggleModal}
+        visible={showModal}
+      ></SignUpModal>
       <div className="md:px-20 space-y-4">
         <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">
           Login
@@ -101,7 +131,7 @@ export default function LoginSignup() {
         <InputField
           label={"Email"}
           type={"email"}
-          placeholder={"email"}
+          placeholder={"someone@example.com"}
           value={email}
           changeHandler={handleEmailChange}
           valid={emailErrors}
@@ -130,6 +160,9 @@ export default function LoginSignup() {
               Sign up here
             </span>
           </p>
+        </div>
+        <div className="text-xl font-semibold text-center border-t border-slate-900 pt-2">
+          {message}
         </div>
       </div>
       <div className="text-4xl leading-loose mt-10 hidden lg:block">

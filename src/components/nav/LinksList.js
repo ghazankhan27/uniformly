@@ -33,13 +33,22 @@ export default function LinksList() {
         }
       >
         <li>
-          <LinkStyled path={"/"} label={"Home"}></LinkStyled>
-        </li>
-        <li>
-          <LinkStyled path={"/about"} label={"About"}></LinkStyled>
+          <LinkStyled
+            toggleNav={toggleHidden}
+            path={"/"}
+            label={"Home"}
+          ></LinkStyled>
         </li>
         <li>
           <LinkStyled
+            toggleNav={toggleHidden}
+            path={"/about"}
+            label={"About"}
+          ></LinkStyled>
+        </li>
+        <li>
+          <LinkStyled
+            toggleNav={toggleHidden}
             path="/profile"
             label={auth ? name : "Login"}
           ></LinkStyled>

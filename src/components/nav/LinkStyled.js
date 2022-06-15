@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function LinkStyled({ path, label }) {
+export default function LinkStyled({ path, label, toggleNav }) {
   return (
     <Link
-      className="hover:underline hover:text-orange-200 transition"
+      onClick={toggleNav}
+      className="hover:underline hover:text-orange-200"
       to={path}
     >
       {label}

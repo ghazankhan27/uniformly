@@ -2,34 +2,62 @@ import React, { useState } from "react";
 import Button from "../../Button";
 import InputField from "./InputField";
 import { MdClose } from "react-icons/md";
-import { isEmail } from "validator";
+import { isEmail, isEmpty } from "validator";
 import Loader from "../../Loader";
 
-export default function SignUpModal({ visible, toggleModal }) {
+export default function SignUpModal({ visible, toggleModal, expand }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState(false);
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+    setName("");
+  };
+
+  const removeErrorMessages = () => {
+    if (emailError !== false) setEmailError(false);
+    if (passwordErrors !== false) setPasswordErrors(false);
+    if (message !== null) setMessage(null);
+  };
 
   const emailValidation = (email) => {
     const emailCheck = isEmail(email);
     return emailCheck;
   };
 
+  const passwordValidation = (password) => {
+    const passwordCheck = !isEmpty(password) && password.length >= 6;
+
+    if (passwordCheck) {
+      setPasswordErrors(false);
+      return true;
+    }
+
+    setPasswordErrors(true);
+    return false;
+  };
+
   const register = (name, email, password) => {
-    if (email.length == 0 || password.length == 0 || name.length == 0) {
+    removeErrorMessages();
+
+    if (email.length === 0 || password.length === 0 || name.length === 0) {
       setMessage("Fields cannot be empty");
       return;
     }
 
-    setMessage("");
-
     if (!emailValidation(email)) {
       setEmailError(true);
-      setEmailMessage("Please enter a valid email");
+      return;
+    }
+
+    if (!passwordValidation(password)) {
+      setPasswordErrors(true);
       return;
     }
 
@@ -48,19 +76,22 @@ export default function SignUpModal({ visible, toggleModal }) {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status !== 201) {
+          return null;
+        }
+
+        return res.json();
+      })
       .then((data) => {
-        if (data.message !== "Already exists") {
+        if (data) {
           setMessage("Success");
           setLoading(false);
-
           setTimeout(() => {
             toggleModal();
-            setMessage("");
-            setEmail("");
-            setPassword("");
-            setName("");
-          }, 2000);
+            removeErrorMessages();
+            clearInputs();
+          }, 1000);
         } else {
           setLoading(false);
           setMessage("User already exists");
@@ -68,18 +99,22 @@ export default function SignUpModal({ visible, toggleModal }) {
       })
       .catch((error) => {
         setMessage("There is an error.");
+        setLoading(false);
       });
   };
 
   const handleEmailChange = (event) => {
+    removeErrorMessages();
     setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
+    removeErrorMessages();
     setPassword(event.target.value);
   };
 
   const handleNameChange = (event) => {
+    removeErrorMessages();
     setName(event.target.value);
   };
 
@@ -96,11 +131,16 @@ export default function SignUpModal({ visible, toggleModal }) {
     <div
       className={
         visible +
-        " fixed w-screen h-screen top-0 left-0 flex flex-col justify-center items-center"
+        " fixed w-screen h-screen top-0 left-0 flex flex-col justify-center items-center modal-container"
       }
     >
-      <div className="absolute w-full h-full bg-orange-900 opacity-50"></div>
-      <div className="m-2 bg-orange-100 space-y-4 z-10 rounded shadow-slate-700 shadow-sm flex flex-col md:px-20 md:py-10 py-6 relative px-4">
+      <div className="absolute w-full h-full bg-orange-900 opacity-50 modal-bg"></div>
+      <div
+        className={
+          expand +
+          " modal-fg m-2 bg-orange-100 space-y-4 z-10 rounded shadow-slate-700 shadow-sm flex flex-col md:px-20 md:py-10 py-6 relative px-4"
+        }
+      >
         {closeIcon()}
         <p className="text-xl border-b border-black text-center">
           Please enter the required information to sign up
@@ -119,13 +159,15 @@ export default function SignUpModal({ visible, toggleModal }) {
           value={email}
           changeHandler={handleEmailChange}
           valid={emailError}
-          errorMessage={emailMessage}
+          errorMessage={"Please enter a valid email"}
         ></InputField>
         <InputField
           label={"Password"}
           type={"password"}
           placeholder={"password"}
           value={password}
+          valid={passwordErrors}
+          errorMessage={"Password should be at least 6 characters"}
           changeHandler={handlePasswordChange}
         ></InputField>
         <div className="flex justify-center">

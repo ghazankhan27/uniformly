@@ -9,6 +9,7 @@ import About from "./pages/About";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import Profile from "./pages/login/Profile";
+import NoRoute from "./pages/404/NoRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +21,7 @@ root.render(
           <Route path="/profile" element={<Profile></Profile>}></Route>
           <Route path="/about" element={<About></About>}></Route>
         </Route>
+        <Route path="*" element={<NoRoute></NoRoute>}></Route>
       </Routes>
     </BrowserRouter>
   </Provider>
