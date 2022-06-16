@@ -92,8 +92,8 @@ export default function LoginAdmin() {
     }
   };
   return (
-    <div className="fade-in flex flex-col items-center space-y-4 mt-36">
-      <div className="">
+    <div className="fade-in flex flex-col space-y-4 w-1/3 mx-auto">
+      <div className="space-y-4">
         <p className="text-2xl font-bold my-4 text-center border-b border-slate-900 pb-2">
           Admin Login
         </p>

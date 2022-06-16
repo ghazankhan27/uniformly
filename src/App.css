@@ -34,56 +34,67 @@
   }
 }
 
-.modal-container{
- transition: all 0.2s;
+.modal-container {
+  transition: all 0.2s;
 }
 
-.modal-container-visible{
+.modal-container-visible {
   opacity: 1;
   visibility: visible;
 }
 
-.modal-container-invisible{
+.modal-container-invisible {
   opacity: 0;
   visibility: hidden;
-
 }
 
 .modal-fg {
-  transition:0.2s all;
+  transition: 0.2s all;
 }
 
-.modal-fg-visible{
+.modal-fg-visible {
   transform: scale(1);
 }
 
-.modal-fg-invisible{
+.modal-fg-invisible {
   transform: scale(0);
 }
 
-.uni-card-image{
+.uni-card-image {
   height: 14em;
   width: 28em;
 }
 
-.uni-card-animate{
-  animation: 350ms fade-in
+.uni-card-animate {
+  animation: 350ms fade-in;
 }
 
-.fade-in{
-  animation: 350ms fade-in
+.fade-in {
+  animation: 350ms fade-in;
 }
 
 @keyframes fade-in {
-  from {opacity: 0; transform: translateY(2em);}
-  to{opacity: 1; transform: translateY(0em);}
-  
+  from {
+    opacity: 0;
+    transform: translateY(2em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0em);
+  }
 }
 
-.nav-animate{
-  animation: slide-from-top 350ms}
+.nav-animate {
+  animation: slide-from-top 350ms;
+}
 
 @keyframes slide-from-top {
-  from {transform: translateY(-40%); opacity: 0;}
-  to {transform: translateY(0%); opacity: 1;}
+  from {
+    transform: translateY(-40%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }

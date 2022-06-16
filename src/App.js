@@ -41,7 +41,7 @@ function App() {
     }
   };
 
-  useEffect(getName, []);
+  useEffect(getName, [auth, dispatch]);
 
   return (
     <div className="App bg-orange-100 min-h-screen">
