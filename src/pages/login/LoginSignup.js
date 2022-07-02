@@ -118,7 +118,7 @@ export default function LoginSignup() {
   };
 
   return (
-    <div className="fade-in grid lg:grid-cols-2 gap-10">
+    <div className="fade-in grid lg:grid-cols-2 gap-10 overflow-hidden">
       <SignUpModal
         expand={expand}
         toggleModal={toggleModal}
