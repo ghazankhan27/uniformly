@@ -123,60 +123,62 @@ export default function LoginSignup() {
   };
 
   return (
-    <div className="fade-in grid lg:grid-cols-2 gap-10 overflow-hidden">
+    <div>
       <SignUpModal
         expand={expand}
         toggleModal={toggleModal}
         visible={showModal}
       ></SignUpModal>
-      <div className="fade-in grid lg:grid-cols-2 gap-10">
-        <div className="md:px-20 space-y-4">
-          <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">
-            Login
-          </p>
-          <InputField
-            label={"Email"}
-            type={"email"}
-            placeholder={"someone@example.com"}
-            value={email}
-            changeHandler={handleEmailChange}
-            valid={emailErrors}
-            errorMessage={"Please enter a valid email."}
-          ></InputField>
-          <InputField
-            label={"Password"}
-            type={"password"}
-            placeholder={"password"}
-            value={password}
-            changeHandler={handlePasswordChange}
-            valid={passwordErrors}
-            errorMessage={"Field cannot be empty."}
-          ></InputField>
-          <div className="flex flex-col items-center space-y-2 mt-6">
-            {loading ? (
-              <Loader></Loader>
-            ) : (
-              <Button
-                clickHandler={() => login(email, password)}
-                label={"Login"}
-              ></Button>
-            )}
-            <p>
-              Don't have an account?{" "}
-              <span
-                onClick={toggleModal}
-                className="text-blue-700 hover:underline hover:cursor-pointer"
-              >
-                Sign up here
-              </span>
+      <div className="fade-in grid lg:grid-cols-2 gap-10 overflow-hidden">
+        <div className="fade-in grid lg:grid-cols-2 gap-10">
+          <div className="md:px-20 space-y-4">
+            <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">
+              Login
             </p>
+            <InputField
+              label={"Email"}
+              type={"email"}
+              placeholder={"someone@example.com"}
+              value={email}
+              changeHandler={handleEmailChange}
+              valid={emailErrors}
+              errorMessage={"Please enter a valid email."}
+            ></InputField>
+            <InputField
+              label={"Password"}
+              type={"password"}
+              placeholder={"password"}
+              value={password}
+              changeHandler={handlePasswordChange}
+              valid={passwordErrors}
+              errorMessage={"Field cannot be empty."}
+            ></InputField>
+            <div className="flex flex-col items-center space-y-2 mt-6">
+              {loading ? (
+                <Loader></Loader>
+              ) : (
+                <Button
+                  clickHandler={() => login(email, password)}
+                  label={"Login"}
+                ></Button>
+              )}
+              <p>
+                Don't have an account?{" "}
+                <span
+                  onClick={toggleModal}
+                  className="text-blue-700 hover:underline hover:cursor-pointer"
+                >
+                  Sign up here
+                </span>
+              </p>
+            </div>
+            <div className="text-xl font-semibold text-center border-t border-slate-900 pt-2">
+              {message}
+            </div>
           </div>
-          <div className="text-xl font-semibold text-center border-t border-slate-900 pt-2">
-            {message}
+          <div className="text-4xl leading-loose mt-10 hidden lg:block">
+            <p>Login now to enjoy full benefits of our application!</p>
           </div>
-        </div>
-        <div className="text-4xl leading-loose mt-10 hidden lg:block">
-          <p>Login now to enjoy full benefits of our application!</p>
         </div>
       </div>
     </div>
