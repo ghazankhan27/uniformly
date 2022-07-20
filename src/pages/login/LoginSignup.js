@@ -79,7 +79,7 @@ export default function LoginSignup() {
     }
   };
 
-  const login = (email, password) => {
+  const login = async (email, password) => {
     const validated = emailValidation(email) && passwordValidation(password);
 
     if (!validated) return;
@@ -88,38 +88,37 @@ export default function LoginSignup() {
 
     const data = { email: email, password: password };
 
-    fetch("http://localhost:8000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(async (res) => {
-        if (res.status !== 200) {
-          let data = await res.json();
-          setMessage(data.message);
-          return null;
-        } else {
-          return await res.json();
-        }
-      })
-      .then((data) => {
-        if (data) {
-          localStorage.setItem("token", data.token);
-          dispatch(setAuth(true));
-          dispatch(setName(data.name));
-          navigate("/");
-        } else {
-          throw Error("No token");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        setLoading(false);
+    let res;
+
+    try {
+      res = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+    } catch (err) {
+      console.log(err);
+    }
+
+    const resData = await res.json();
+
+    if (res.status !== 200) {
+      setMessage(resData.message);
+      setLoading(false);
+      return;
+    }
+
+    localStorage.setItem("token", resData.token);
+
+    dispatch(setAuth(true));
+
+    dispatch(setName(resData.name));
+
+    setLoading(false);
+
+    navigate("/");
   };
 
   return (
