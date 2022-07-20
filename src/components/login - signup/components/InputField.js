@@ -15,7 +15,7 @@ export default function InputField({
       <input
         onChange={changeHandler}
         value={value}
-        className="p-2 bg-neutral-200 border border-slate-800 focus:bg-slate-50 rounded"
+        className="p-2 bg-neutral-100 border border-slate-800 focus:bg-slate-50 rounded"
         type={type}
         placeholder={placeholder}
       ></input>

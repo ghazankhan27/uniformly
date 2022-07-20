@@ -5,7 +5,6 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 
 export default function LinksList() {
   const auth = useSelector((state) => state.auth.authorized);
-  const name = useSelector((state) => state.auth.name);
 
   const [show, setShow] = useState("hidden");
 
@@ -50,7 +49,7 @@ export default function LinksList() {
           <LinkStyled
             toggleNav={toggleHidden}
             path="/profile"
-            label={auth ? name : "Login"}
+            label={auth ? "Profile" : "Login"}
           ></LinkStyled>
         </li>
       </ul>

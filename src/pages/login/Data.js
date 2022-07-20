@@ -11,7 +11,7 @@ export default function Data() {
   const logout = () => {
     localStorage.removeItem("token");
     dispatch(setAuth(false));
-    dispatch(setName(""));
+    dispatch(setName(null));
   };
 
   return (

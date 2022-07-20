@@ -5,7 +5,7 @@ export default function LinkStyled({ path, label, toggleNav }) {
   return (
     <Link
       onClick={toggleNav}
-      className="hover:underline hover:text-orange-200"
+      className="hover:underline hover:text-blue-200"
       to={path}
     >
       {label}

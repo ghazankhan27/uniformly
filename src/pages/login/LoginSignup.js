@@ -6,6 +6,7 @@ import SignUpModal from "../../components/login - signup/components/SignUpModal"
 import { setAuth, setName } from "../../redux/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";
+import Loader from "../../components/Loader";
 
 export default function LoginSignup() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function LoginSignup() {
   const [showModal, setShowModal] = useState("modal-container-invisible");
   const [message, setMessage] = useState(null);
   const [expand, setExpand] = useState("modal-fg-invisible");
+  const [loading, setLoading] = useState(false);
 
   const capitalizeString = (string) => {
     let strings = string.split(" ");
@@ -80,93 +82,102 @@ export default function LoginSignup() {
   const login = (email, password) => {
     const validated = emailValidation(email) && passwordValidation(password);
 
-    if (validated) {
-      const data = { email: email, password: password };
+    if (!validated) return;
 
-      fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    setLoading(true);
+
+    const data = { email: email, password: password };
+
+    fetch("http://localhost:8000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then(async (res) => {
+        if (res.status !== 200) {
+          let data = await res.json();
+          setMessage(data.message);
+          return null;
+        } else {
+          return await res.json();
+        }
       })
-        .then(async (res) => {
-          if (res.status !== 200) {
-            let data = await res.json();
-            setMessage(data.message);
-            return null;
-          } else {
-            return res.json();
-          }
-        })
-        .then((data) => {
-          if (data) {
-            localStorage.setItem("token", data.token);
-            dispatch(setAuth(true));
-            dispatch(setName(capitalizeString(data.name)));
-            navigate("/");
-          } else {
-            throw Error("No token");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      return;
-    }
+      .then((data) => {
+        if (data) {
+          localStorage.setItem("token", data.token);
+          dispatch(setAuth(true));
+          dispatch(setName(data.name));
+          navigate("/");
+        } else {
+          throw Error("No token");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
-    <div className="fade-in grid lg:grid-cols-2 gap-10">
+    <div>
       <SignUpModal
         expand={expand}
         toggleModal={toggleModal}
         visible={showModal}
       ></SignUpModal>
-      <div className="md:px-20 space-y-4">
-        <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">
-          Login
-        </p>
-        <InputField
-          label={"Email"}
-          type={"email"}
-          placeholder={"someone@example.com"}
-          value={email}
-          changeHandler={handleEmailChange}
-          valid={emailErrors}
-          errorMessage={"Please enter a valid email."}
-        ></InputField>
-        <InputField
-          label={"Password"}
-          type={"password"}
-          placeholder={"password"}
-          value={password}
-          changeHandler={handlePasswordChange}
-          valid={passwordErrors}
-          errorMessage={"Field cannot be empty."}
-        ></InputField>
-        <div className="flex flex-col items-center space-y-2 mt-6">
-          <Button
-            clickHandler={() => login(email, password)}
-            label={"Login"}
-          ></Button>
-          <p>
-            Don't have an account?{" "}
-            <span
-              onClick={toggleModal}
-              className="text-blue-700 hover:underline hover:cursor-pointer"
-            >
-              Sign up here
-            </span>
+      <div className="fade-in grid lg:grid-cols-2 gap-10">
+        <div className="md:px-20 space-y-4">
+          <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">
+            Login
           </p>
+          <InputField
+            label={"Email"}
+            type={"email"}
+            placeholder={"someone@example.com"}
+            value={email}
+            changeHandler={handleEmailChange}
+            valid={emailErrors}
+            errorMessage={"Please enter a valid email."}
+          ></InputField>
+          <InputField
+            label={"Password"}
+            type={"password"}
+            placeholder={"password"}
+            value={password}
+            changeHandler={handlePasswordChange}
+            valid={passwordErrors}
+            errorMessage={"Field cannot be empty."}
+          ></InputField>
+          <div className="flex flex-col items-center space-y-2 mt-6">
+            {loading ? (
+              <Loader></Loader>
+            ) : (
+              <Button
+                clickHandler={() => login(email, password)}
+                label={"Login"}
+              ></Button>
+            )}
+            <p>
+              Don't have an account?{" "}
+              <span
+                onClick={toggleModal}
+                className="text-blue-700 hover:underline hover:cursor-pointer"
+              >
+                Sign up here
+              </span>
+            </p>
+          </div>
+          <div className="text-xl font-semibold text-center border-t border-slate-900 pt-2">
+            {message}
+          </div>
         </div>
-        <div className="text-xl font-semibold text-center border-t border-slate-900 pt-2">
-          {message}
+        <div className="text-4xl leading-loose mt-10 hidden lg:block">
+          <p>Login now to enjoy full benefits of our application!</p>
         </div>
-      </div>
-      <div className="text-4xl leading-loose mt-10 hidden lg:block">
-        <p>Login now to enjoy full benefits of our application!</p>
       </div>
     </div>
   );

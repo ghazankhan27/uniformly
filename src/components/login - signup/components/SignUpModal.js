@@ -91,7 +91,7 @@ export default function SignUpModal({ visible, toggleModal, expand }) {
             toggleModal();
             removeErrorMessages();
             clearInputs();
-          }, 1000);
+          }, 500);
         } else {
           setLoading(false);
           setMessage("User already exists");
@@ -134,11 +134,11 @@ export default function SignUpModal({ visible, toggleModal, expand }) {
         " fixed w-screen h-screen top-0 left-0 flex flex-col justify-center items-center modal-container"
       }
     >
-      <div className="absolute w-full h-full bg-orange-900 opacity-50 modal-bg"></div>
+      <div className="absolute w-full h-full bg-neutral-800 opacity-50 modal-bg"></div>
       <div
         className={
           expand +
-          " modal-fg m-2 bg-orange-100 space-y-4 z-10 rounded shadow-slate-700 shadow-sm flex flex-col md:px-20 md:py-10 py-6 relative px-4"
+          " modal-fg m-2 bg-neutral-100 space-y-4 z-10 rounded shadow-slate-700 shadow-sm flex flex-col md:px-20 md:py-10 py-6 relative px-4"
         }
       >
         {closeIcon()}
