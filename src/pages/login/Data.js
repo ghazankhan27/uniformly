@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { setAuth, setName } from "../../redux/slices/AuthSlice";
 import Button from "../../components/Button";
+import { setAuth, setName } from "../../redux/slices/AuthSlice";
 
 export default function Data() {
   const dispatch = useDispatch();

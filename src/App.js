@@ -4,8 +4,8 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setName, setAuth } from "./redux/slices/AuthSlice";
 import { useEffect, useState } from "react";
-import Loader from "./components/Loader";
 import { authorizeToken } from "./auth/Authorize";
+import Loader from "./components/Loader";
 
 function App() {
   const [loading, setLoading] = useState(true);

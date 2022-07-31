@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../Button";
-import InputField from "./InputField";
+import InputField from "../../../components/InputField";
 import { MdClose } from "react-icons/md";
 import { isEmail, isEmpty } from "validator";
 import Loader from "../../Loader";

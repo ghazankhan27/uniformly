@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Button from "../../components/Button";
-import InputField from "../../components/login - signup/components/InputField";
+import InputField from "../../components/InputField";
 import { isEmail, isEmpty } from "validator";
-import SignUpModal from "../../components/login - signup/components/SignUpModal";
+import SignUpModal from "./components/SignUpModal";
 import { setAuth, setName } from "../../redux/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";

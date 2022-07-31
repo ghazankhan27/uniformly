@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/Home";
 import Profile from "../pages/login/Profile";
 import About from "../pages/About";
 import Admin from "../pages/admin/Admin";
 import NoRoute from "../pages/404/NoRoute";
+import Home from "../pages/home/Home";
 
 export default function HomeRoutes() {
   return (

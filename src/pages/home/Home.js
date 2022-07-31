@@ -1,5 +1,7 @@
 import React from "react";
-import UniversityCard from "../components/home/UniversityCard";
+import Title from "./components/Title";
+import UniversityGrid from "./components/UniversityGrid";
+import HomeContainer from "./components/HomeContainer";
 
 export default function Home() {
   const data = [
@@ -30,22 +32,9 @@ export default function Home() {
   ];
 
   return (
-    <div>
-      <div className="w-full border-b border-slate-900">
-        <p className="text-3xl text-center">
-          Here is the latest data from universities in Australia
-        </p>
-      </div>
-      <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 md:gap-10 gap-8">
-        {data.map((uni, index) => (
-          <UniversityCard
-            key={index}
-            title={uni.title}
-            img={uni.img}
-            description={uni.description}
-          ></UniversityCard>
-        ))}
-      </div>
-    </div>
+    <HomeContainer>
+      <Title></Title>
+      <UniversityGrid data={data}></UniversityGrid>
+    </HomeContainer>
   );
 }
