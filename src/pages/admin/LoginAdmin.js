@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { isEmpty } from "validator";
 import { setAuth } from "../../redux/slices/AdminAuthSlice";
-import InputField from "../../components/login - signup/components/InputField";
+import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 

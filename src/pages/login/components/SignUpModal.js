@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Button from "../../Button";
+import Button from "../../../components/Button";
 import InputField from "../../../components/InputField";
 import { MdClose } from "react-icons/md";
 import { isEmail, isEmpty } from "validator";
-import Loader from "../../Loader";
+import Loader from "../../../components/Loader";
 
 export default function SignUpModal({ visible, toggleModal, expand }) {
   const [email, setEmail] = useState("");
