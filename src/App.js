@@ -6,6 +6,7 @@ import { setName, setAuth } from "./redux/slices/AuthSlice";
 import { useEffect, useState } from "react";
 import { authorizeToken } from "./auth/Authorize";
 import Loader from "./components/Loader";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -39,9 +40,10 @@ function App() {
       ) : (
         <>
           <NavBar></NavBar>
-          <div className="content md:px-20 px-8 p-10">
+          <div className="content md:px-20 px-8 p-10 min-h-screen">
             <Outlet></Outlet>
           </div>
+          <Footer />
         </>
       )}
     </div>

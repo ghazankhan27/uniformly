@@ -98,3 +98,11 @@
     opacity: 1;
   }
 }
+
+.img-div {
+  background: url("../public/images/library.jpg");
+  height: 30vh;
+  width: 100%;
+  background-size: 100% auto;
+  background-attachment: fixed;
+}
