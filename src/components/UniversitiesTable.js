@@ -11,30 +11,16 @@ export const UniversitiesTable = ({ data }) => {
             <TableHeading>Ranking</TableHeading>
           </tr>
         </thead>
-
         <tbody>
           {data.map((item, index) => {
-            if (index % 2 !== 0) {
-              return (
-                <tr className="bg-slate-200">
-                  <td className="text-center">
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue-600 hover:underline"
-                      href={item.url}
-                    >
-                      {item.title}
-                    </a>
-                  </td>
-                  <TableBody>{item.location}</TableBody>
-                  <TableBody>{item.ranking}</TableBody>
-                </tr>
-              );
-            }
             return (
-              <tr>
-                <td className="text-center">
+              <tr
+                key={index}
+                className={`
+                ${index % 2 === 0 && "bg-slate-200"}
+                `}
+              >
+                <TableData>
                   <a
                     target="_blank"
                     rel="noreferrer"
@@ -43,9 +29,9 @@ export const UniversitiesTable = ({ data }) => {
                   >
                     {item.title}
                   </a>
-                </td>
-                <TableBody>{item.location}</TableBody>
-                <TableBody>{item.ranking}</TableBody>
+                </TableData>
+                <TableData>{item.location}</TableData>
+                <TableData>{item.ranking}</TableData>
               </tr>
             );
           })}
@@ -59,6 +45,6 @@ const TableHeading = ({ children }) => {
   return <th className="border-b border-slate-900">{children}</th>;
 };
 
-const TableBody = ({ children }) => {
+const TableData = ({ children }) => {
   return <td className="text-center">{children}</td>;
 };

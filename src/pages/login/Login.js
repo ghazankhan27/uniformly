@@ -16,18 +16,9 @@ export default function LoginSignup() {
   const [password, setPassword] = useState("");
   const [emailErrors, setEmailErrors] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState(false);
-  const [showModal, setShowModal] = useState("modal-container-invisible");
+  const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState(null);
-  const [expand, setExpand] = useState("modal-fg-invisible");
   const [loading, setLoading] = useState(false);
-
-  // const capitalizeString = (string) => {
-  //   let strings = string.split(" ");
-  //   let name = strings[0];
-  //   const _name = name.charAt(0).toUpperCase() + name.slice(1);
-
-  //   return _name;
-  // };
 
   const removeErrorMessages = () => {
     if (emailErrors !== false) setEmailErrors(false);
@@ -70,13 +61,7 @@ export default function LoginSignup() {
   };
 
   const toggleModal = () => {
-    if (showModal === "modal-container-invisible") {
-      setShowModal("modal-container-visible");
-      setExpand("modal-fg-visible");
-    } else {
-      setExpand("modal-fg-invisible");
-      setShowModal("modal-container-invisible");
-    }
+    setShowModal((state) => !state);
   };
 
   const login = async (email, password) => {
@@ -86,48 +71,41 @@ export default function LoginSignup() {
 
     setLoading(true);
 
-    const data = { email: email, password: password };
-
-    let res;
-
     try {
-      res = await fetch("http://localhost:8000/auth/login", {
+      const _data = { email: email, password: password };
+
+      const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(_data),
       });
+
+      const data = await response.json();
+
+      if (response.status !== 200) {
+        setMessage(data.message);
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+
+      dispatch(setAuth(true));
+
+      dispatch(setName(data.name));
+
+      navigate("/");
     } catch (err) {
       console.log(err);
-    }
-
-    const resData = await res.json();
-
-    if (res.status !== 200) {
-      setMessage(resData.message);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    localStorage.setItem("token", resData.token);
-
-    dispatch(setAuth(true));
-
-    dispatch(setName(resData.name));
-
-    setLoading(false);
-
-    navigate("/");
   };
 
   return (
     <div>
-      <SignUpModal
-        expand={expand}
-        toggleModal={toggleModal}
-        visible={showModal}
-      ></SignUpModal>
+      <SignUpModal toggleModal={toggleModal} visible={showModal}></SignUpModal>
       <div className="fade-in grid lg:grid-cols-2 gap-10">
         <div className="md:px-20 space-y-4">
           <p className="text-center text-2xl border-b border-slate-800 py-4 mb-8">

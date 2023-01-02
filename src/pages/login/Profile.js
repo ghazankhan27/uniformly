@@ -5,5 +5,6 @@ import Login from "./Login";
 
 export default function Profile() {
   const auth = useSelector((state) => state.auth.authorized);
+
   return <>{auth ? <Data></Data> : <Login></Login>}</>;
 }
