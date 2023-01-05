@@ -4,33 +4,6 @@ import { UniversitiesTable } from "../../components/UniversitiesTable";
 import styles from "./home.module.css";
 
 export default function Home() {
-  const data = [
-    {
-      title: "California Institute of Technology - Caltech",
-      url: "https://www.mastersportal.com/universities/11712/california-institute-of-technology-caltech.html",
-      location: "Pasadena, CA, United States",
-      ranking: 1,
-    },
-    {
-      title: "Harvard University",
-      url: "https://www.mastersportal.com/universities/11731/harvard-university.html",
-      location: "Cambridge, MA, United States",
-      ranking: 2,
-    },
-    {
-      title: "Stanford University",
-      url: "https://www.mastersportal.com/universities/11778/stanford-university.html",
-      location: "Stanford, CA, United States",
-      ranking: 3,
-    },
-    {
-      title: "Massachusetts Institute of Technology (MIT)",
-      url: "https://www.mastersportal.com/universities/11740/massachusetts-institute-of-technology.html",
-      location: "Cambridge, MA, United States",
-      ranking: 4,
-    },
-  ];
-
   return (
     <HomeContainer>
       <div className="img-div flex justify-center items-center relative">
@@ -39,7 +12,7 @@ export default function Home() {
           <p>Top Universities</p>
         </div>
       </div>
-      <UniversitiesTable data={data} />
+      <UniversitiesTable />
     </HomeContainer>
   );
 }

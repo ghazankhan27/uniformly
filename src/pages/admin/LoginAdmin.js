@@ -57,49 +57,39 @@ export default function LoginAdmin() {
     return false;
   };
 
-  const login = (username, password) => {
-    setLoading(true);
+  const login = async () => {
+    try {
+      setLoading(true);
 
-    const validated =
-      usernameValidation(username) && passwordValidation(password);
+      const validated =
+        usernameValidation(username) && passwordValidation(password);
 
-    if (!validated) {
-      setMessage("Please enter valid username and password");
-      setLoading(false);
-      return;
-    }
+      if (!validated) {
+        throw new Error("Please enter a valid username and password");
+      }
 
-    const data = { username: username, password: password };
+      const _data = { username: username, password: password };
 
-    fetch("http://localhost:8000/admin/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(async (res) => {
-        if (res.status !== 200) {
-          let data = await res.json();
-          setMessage(data.message);
-          return null;
-        } else {
-          return await res.json();
-        }
-      })
-      .then((data) => {
-        if (data) {
-          dispatch(setAuth(true));
-        } else {
-          throw Error("Unauthorized");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      })
-      .finally(() => {
-        setLoading(false);
+      const res = await fetch("http://localhost:8000/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(_data),
       });
+
+      const data = await res.json();
+
+      if (res.status !== 200) {
+        throw new Error(data.message);
+      }
+
+      dispatch(setAuth(true));
+    } catch (err) {
+      setMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="fade-in flex flex-col space-y-4 w-1/3 mx-auto">

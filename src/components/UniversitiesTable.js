@@ -1,40 +1,51 @@
-import React from "react";
+import { useGetAllUniversities } from "../hooks/useGetAllUniversities";
 
-export const UniversitiesTable = ({ data }) => {
+export const UniversitiesTable = () => {
+  const { data, loading } = useGetAllUniversities();
+
   return (
-    <div className="mt-10">
-      <table className="table-fixed w-full">
+    <div className="mt-20 grid place-items-center">
+      <table className="table-fixed w-11/12">
         <thead>
           <tr>
+            <TableHeading />
             <TableHeading>Title</TableHeading>
             <TableHeading>Location</TableHeading>
-            <TableHeading>Ranking</TableHeading>
+            <TableHeading>Contact</TableHeading>
+            <TableHeading>Programs</TableHeading>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => {
-            return (
-              <tr
-                key={index}
-                className={`
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            data.map((item, index) => {
+              return (
+                <tr
+                  key={index}
+                  className={`
                 ${index % 2 === 0 && "bg-slate-200"}
                 `}
-              >
-                <TableData>
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600 hover:underline"
-                    href={item.url}
-                  >
-                    {item.title}
-                  </a>
-                </TableData>
-                <TableData>{item.location}</TableData>
-                <TableData>{item.ranking}</TableData>
-              </tr>
-            );
-          })}
+                >
+                  <TableData>
+                    <div className="rounded-full">
+                      <img
+                        src={`http://localhost:8000/${item.image}`}
+                        alt={item.name}
+                        height={200}
+                        width={200}
+                        className="object-cover"
+                      />
+                    </div>
+                  </TableData>
+                  <TableData>{item.name}</TableData>
+                  <TableData>{item.address}</TableData>
+                  <TableData>{item.contact}</TableData>
+                  <TableData>{item.degree}</TableData>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>
