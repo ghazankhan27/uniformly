@@ -17,3 +17,21 @@ export const deleteUniversityEndpoint = (id) => {
     url: `${host}/university/delete/${id}`,
   };
 };
+
+export const getAllDepartmentsEndpoint = {
+  url: `${host}/department/all`,
+};
+
+export const addDepartmentEndpoint = {
+  url: `${host}/department/add`,
+};
+
+export const updateDepartmentEndpoint = {
+  url: `${host}/department/update`,
+};
+
+export const deleteDepartmentEndpoint = (id) => {
+  return {
+    url: `${host}/department/delete/${id}`,
+  };
+};

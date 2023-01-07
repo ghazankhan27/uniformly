@@ -12,6 +12,10 @@ export const EditUniversityForm = ({ item, getData, setEditRowNumber }) => {
         <form
           onSubmit={async (e) => {
             const status = await updateUniversitySubmit(e, item.id);
+            if (status !== "Success") {
+              setStatus(status);
+              return;
+            }
             getData();
             setStatus(status);
             setEditRowNumber(-1);
