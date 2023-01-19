@@ -85,6 +85,7 @@ export default function LoginAdmin() {
       }
 
       dispatch(setAuth(true));
+      localStorage.setItem("admin", "true");
     } catch (err) {
       setMessage(err.message);
     } finally {

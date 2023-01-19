@@ -8,6 +8,7 @@ export const SideBar = ({ setSelected, selected }) => {
   const dispatch = useDispatch();
 
   const logout = () => {
+    localStorage.setItem("admin", "false");
     dispatch(setAuth(false));
   };
 
@@ -40,14 +41,14 @@ export const SideBar = ({ setSelected, selected }) => {
             Add University
           </SideBarButton>
         </li>
-        <li>
+        {/* <li>
           <SideBarButton
             onClick={() => setSelected(2)}
             selected={selected === 2}
           >
             Departments
           </SideBarButton>
-        </li>
+        </li> */}
         {/* <li>
           <SideBarButton
             onClick={() => setSelected(3)}
@@ -56,18 +57,18 @@ export const SideBar = ({ setSelected, selected }) => {
             Users
           </SideBarButton>
         </li> */}
-        <li>
+        {/* <li>
           <SideBarButton
             onClick={() => setSelected(4)}
             selected={selected === 4}
           >
             Profile
           </SideBarButton>
-        </li>
+        </li> */}
         <li className="mt-10">
           <SideBarButton onClick={logout} selected={selected === 5}>
             <div className="flex items-center gap-x-1 font-semibold">
-              <BiLogOut size={18} />
+              <BiLogOut className="text-red-500" size={18} />
               Logout
             </div>
           </SideBarButton>

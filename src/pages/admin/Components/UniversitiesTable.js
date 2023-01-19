@@ -20,9 +20,8 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
           <tr>
             <TableHeading>Title</TableHeading>
             <TableHeading>Location</TableHeading>
-            <TableHeading>Department</TableHeading>
             <TableHeading>Contact</TableHeading>
-            <TableHeading>Programs</TableHeading>
+            <TableHeading>Departments</TableHeading>
             <TableHeading />
           </tr>
         </thead>
@@ -41,9 +40,14 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
                   >
                     <TableData>{item.name}</TableData>
                     <TableData>{item.address}</TableData>
-                    <TableData>{item.d_name}</TableData>
                     <TableData>{item.contact}</TableData>
-                    <TableData>{item.degree}</TableData>
+                    <TableData>
+                      {item.departments.map((item) => (
+                        <>
+                          {item.name} <br />
+                        </>
+                      ))}
+                    </TableData>
                     <TableData>
                       <div>
                         {editRowNumber === item.id ? (
@@ -71,13 +75,13 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
                       </div>
                     </TableData>
                   </tr>
-                  <tr className={`${editRowNumber !== item.id && "hidden"}`}>
+                  {/* <tr className={`${editRowNumber !== item.id && "hidden"}`}>
                     <EditUniversityForm
                       item={item}
                       getData={getData}
                       setEditRowNumber={setEditRowNumber}
                     />
-                  </tr>
+                  </tr> */}
                 </>
               );
             })}

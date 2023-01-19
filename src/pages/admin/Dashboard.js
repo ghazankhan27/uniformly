@@ -27,9 +27,9 @@ export default function Dashboard() {
           <div className={`${selected !== 1 && "hidden"}`}>
             <AddUniversityForm getData={getData} />
           </div>
-          <div className={`${selected !== 2 && "hidden"}`}>
+          {/* <div className={`${selected !== 2 && "hidden"}`}>
             <Departments />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

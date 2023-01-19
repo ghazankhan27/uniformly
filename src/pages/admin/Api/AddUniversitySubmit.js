@@ -1,9 +1,10 @@
 import { addUniversityEndpoint } from "../../../services/api";
 
-export const AddUniversitySubmit = async (e) => {
+export const AddUniversitySubmit = async (e, departmentObjects) => {
   e.preventDefault();
 
   const form = new FormData(e.target);
+  form.append("departments", JSON.stringify(departmentObjects));
 
   try {
     const res = await fetch(addUniversityEndpoint.url, {
