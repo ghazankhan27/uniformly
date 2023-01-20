@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 import { AddUniversitySubmit } from "../Api/AddUniversitySubmit";
-import { ChangeButton } from "./ChangeButton";
 import { InputField } from "./InputField";
-import { AiFillDelete } from "react-icons/ai";
 
 export const AddUniversityForm = ({ getData }) => {
   const { status, setStatus } = useClearStatus();
 
   const [program, setProgram] = useState("");
   const [departmentName, setDepartmentName] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState(0);
-  const [selectedProgram, setSelectedProgram] = useState(0);
+  const [selectedDepartment, setSelectedDepartment] = useState({
+    name: "",
+    programs: [],
+  });
+  const [selectedProgram, setSelectedProgram] = useState({
+    name: "",
+    semesters: [],
+  });
   const [departmentObjects, setDepartmentObjects] = useState([]);
   const [semester, setSemester] = useState(1);
   const [semesterFee, setSemesterFee] = useState(0);
 
   useEffect(() => {
-    if (departmentObjects.length > 0 && selectedDepartment === 0) {
+    if (departmentObjects.length > 0 && selectedDepartment.name === "") {
       setSelectedDepartment(departmentObjects[0]);
     }
   }, [departmentObjects]);
@@ -138,7 +142,7 @@ export const AddUniversityForm = ({ getData }) => {
   }
 
   useEffect(() => {
-    if (!selectedProgram) return;
+    if (selectedDepartment.name === "") return;
 
     if (selectedDepartment.programs.length <= 0) {
       setSelectedProgram(0);
@@ -150,7 +154,7 @@ export const AddUniversityForm = ({ getData }) => {
   }, [selectedDepartment]);
 
   useEffect(() => {
-    if (!selectedDepartment) return;
+    if (selectedDepartment.name === "") return;
 
     const found = selectedDepartment.programs.find(
       (item) => item.name === selectedProgram.name
@@ -166,6 +170,7 @@ export const AddUniversityForm = ({ getData }) => {
     <>
       <p className="text-left px-10 font-bold text-lg">Add New Univeristy</p>
       <hr />
+
       <form
         onSubmit={async (e) => {
           const status = await AddUniversitySubmit(e, departmentObjects);
@@ -334,7 +339,9 @@ const SelectField = ({ value, options, onChange, label }) => {
         className="outline outline-1 outline-slate-200 focus:outline-slate-500 rounded py-1 px-2"
         onChange={onChange}
       >
-        <option disabled>Select..</option>
+        <option value="" disabled>
+          ...
+        </option>
         {options &&
           options.map((item) => {
             return (

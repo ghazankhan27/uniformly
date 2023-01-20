@@ -4,6 +4,7 @@
 
 .uni-card-image {
   height: 200px;
-  width: auto;
+  width: 200px;
   object-fit: contain;
+  background-color: white;
 }

@@ -3,7 +3,6 @@ import { useGetAllUniversities } from "../../hooks/useGetAllUniversities";
 import { AddUniversityForm } from "./Components/AddUniversityForm";
 import { UniversitiesTable } from "./Components/UniversitiesTable";
 import { SideBar } from "./Components/SideBar";
-import { Departments } from "./Components/Departments";
 
 export default function Dashboard() {
   const { data, loading, getData } = useGetAllUniversities();
@@ -17,7 +16,7 @@ export default function Dashboard() {
           <SideBar selected={selected} setSelected={setSelected} />
         </div>
         <div className="col-span-10">
-          <div className={`px-2 ${selected !== 0 && "hidden"}`}>
+          <div className={`${selected !== 0 && "hidden"}`}>
             <UniversitiesTable
               getData={getData}
               loading={loading}
@@ -27,9 +26,6 @@ export default function Dashboard() {
           <div className={`${selected !== 1 && "hidden"}`}>
             <AddUniversityForm getData={getData} />
           </div>
-          {/* <div className={`${selected !== 2 && "hidden"}`}>
-            <Departments />
-          </div> */}
         </div>
       </div>
     </div>

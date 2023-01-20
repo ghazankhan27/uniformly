@@ -1,10 +1,10 @@
 import { updateUniversityEndpoint } from "../../../services/api";
 
-export const updateUniversitySubmit = async (e, id) => {
+export const updateUniversitySubmit = async (e, id, departmentObjects) => {
   e.preventDefault();
 
   const form = new FormData(e.target);
-
+  form.append("departments", JSON.stringify(departmentObjects));
   form.append("id", id);
 
   try {

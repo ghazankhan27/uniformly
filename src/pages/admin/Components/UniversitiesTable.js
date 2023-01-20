@@ -12,82 +12,91 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
   const [editRowNumber, setEditRowNumber] = useState(-1);
 
   return (
-    <>
-      <p className="text-center font-bold text-lg">All Univeristies</p>
-      <hr className="mb-4" />
-      <table className="w-full">
-        <thead>
-          <tr>
-            <TableHeading>Title</TableHeading>
-            <TableHeading>Location</TableHeading>
-            <TableHeading>Contact</TableHeading>
-            <TableHeading>Departments</TableHeading>
-            <TableHeading />
-          </tr>
-        </thead>
-        {loading ? (
-          <p>Loading</p>
-        ) : (
-          <tbody>
-            {data.map((item, index) => {
-              return (
-                <>
-                  <tr
-                    key={item.id}
-                    className={`
+    <div>
+      <div className={`${editRowNumber !== -1 && "hidden"}`}>
+        <p className="text-let font-bold text-lg px-10">All Univeristies</p>
+        <hr className="mb-4" />
+        <table className="w-full">
+          <thead>
+            <tr>
+              <TableHeading>Title</TableHeading>
+              <TableHeading>Location</TableHeading>
+              <TableHeading>Contact</TableHeading>
+              <TableHeading>Departments</TableHeading>
+              <TableHeading />
+            </tr>
+          </thead>
+          {loading ? (
+            <p>Loading</p>
+          ) : (
+            <tbody>
+              {data.map((item, index) => {
+                return (
+                  <>
+                    <tr
+                      key={item.id}
+                      className={`
                   ${index % 2 !== 0 && "bg-slate-200"}
                   `}
-                  >
-                    <TableData>{item.name}</TableData>
-                    <TableData>{item.address}</TableData>
-                    <TableData>{item.contact}</TableData>
-                    <TableData>
-                      {item.departments.map((item) => (
-                        <>
-                          {item.name} <br />
-                        </>
-                      ))}
-                    </TableData>
-                    <TableData>
-                      <div>
-                        {editRowNumber === item.id ? (
-                          <ChangeButton onClick={() => setEditRowNumber(-1)}>
-                            <IoMdCloseCircle />
-                          </ChangeButton>
-                        ) : (
-                          <ChangeButton
-                            onClick={() => setEditRowNumber(item.id)}
-                            color={"blue"}
-                          >
-                            <GoPencil />
-                          </ChangeButton>
-                        )}
+                    >
+                      <TableData>{item.name}</TableData>
+                      <TableData>{item.address}</TableData>
+                      <TableData>{item.contact}</TableData>
+                      <TableData>
+                        {item.departments.map((item) => (
+                          <>
+                            {item.name} <br />
+                          </>
+                        ))}
+                      </TableData>
+                      <TableData>
+                        <div>
+                          {editRowNumber === item.id ? (
+                            <ChangeButton onClick={() => setEditRowNumber(-1)}>
+                              <IoMdCloseCircle />
+                            </ChangeButton>
+                          ) : (
+                            <ChangeButton
+                              onClick={() => setEditRowNumber(item.id)}
+                              color={"blue"}
+                            >
+                              <GoPencil />
+                            </ChangeButton>
+                          )}
 
-                        <ChangeButton
-                          onClick={async () => {
-                            await deleteUniversity(item.id);
-                            getData();
-                          }}
-                          color={"red"}
-                        >
-                          <AiFillDelete />
-                        </ChangeButton>
-                      </div>
-                    </TableData>
-                  </tr>
-                  {/* <tr className={`${editRowNumber !== item.id && "hidden"}`}>
-                    <EditUniversityForm
-                      item={item}
-                      getData={getData}
-                      setEditRowNumber={setEditRowNumber}
-                    />
-                  </tr> */}
-                </>
-              );
-            })}
-          </tbody>
-        )}
-      </table>
-    </>
+                          <ChangeButton
+                            onClick={async () => {
+                              await deleteUniversity(item.id);
+                              getData();
+                            }}
+                            color={"red"}
+                          >
+                            <AiFillDelete />
+                          </ChangeButton>
+                        </div>
+                      </TableData>
+                    </tr>
+                  </>
+                );
+              })}
+            </tbody>
+          )}
+        </table>
+      </div>
+      {editRowNumber !== -1 && (
+        <div>
+          <p className="px-10 first-letter:text-let font-bold text-lg">
+            Edit Univerisity
+          </p>
+          <hr />
+          <EditUniversityForm
+            id={editRowNumber}
+            item={data && data.find((item) => item.id === editRowNumber)}
+            closeForm={() => setEditRowNumber(-1)}
+            getData={getData}
+          />
+        </div>
+      )}
+    </div>
   );
 };

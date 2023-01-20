@@ -46,23 +46,7 @@ export const SideBar = ({ setSelected, selected }) => {
             onClick={() => setSelected(2)}
             selected={selected === 2}
           >
-            Departments
-          </SideBarButton>
-        </li> */}
-        {/* <li>
-          <SideBarButton
-            onClick={() => setSelected(3)}
-            selected={selected === 3}
-          >
-            Users
-          </SideBarButton>
-        </li> */}
-        {/* <li>
-          <SideBarButton
-            onClick={() => setSelected(4)}
-            selected={selected === 4}
-          >
-            Profile
+            Edit University
           </SideBarButton>
         </li> */}
         <li className="mt-10">

@@ -26,6 +26,7 @@ export default function University() {
       }
     }
 
+    /* eslint-disable */
     getData();
   }, []);
 
@@ -46,6 +47,7 @@ export default function University() {
               </p>
             </div>
             <img
+              alt={"university"}
               className="border border-slate-200 rounded"
               style={{ width: 400, height: 400, objectFit: "contain" }}
               src={`http://localhost:8000/${data.image}`}
@@ -89,18 +91,22 @@ export default function University() {
                                 </tr>
                               </thead>
                               <tbody>
-                                {item.semesters?.map((item, index) => (
-                                  <tr
-                                    className={`${
-                                      index % 2 !== 0
-                                        ? "bg-blue-200"
-                                        : "bg-slate-100"
-                                    }`}
-                                  >
-                                    <td>{item.num}</td>
-                                    <td>Rs {item.fee}</td>
-                                  </tr>
-                                ))}
+                                {item?.semesters
+                                  ?.sort((a, b) =>
+                                    parseInt(a.num) < parseInt(b.num) ? -1 : 1
+                                  )
+                                  .map((item, index) => (
+                                    <tr
+                                      className={`${
+                                        index % 2 !== 0
+                                          ? "bg-blue-200"
+                                          : "bg-slate-100"
+                                      }`}
+                                    >
+                                      <td>{item.num}</td>
+                                      <td>Rs {item.fee}</td>
+                                    </tr>
+                                  ))}
                               </tbody>
                             </table>
                           </div>

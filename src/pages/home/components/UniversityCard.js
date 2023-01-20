@@ -18,8 +18,10 @@ export default function UniversityCard({
             <MdLocationOn className="text-red-500" />
             {location}
           </p>
-          <p className="text-sm font-bold">Departments</p>
-          <ul className="border-t border-slate-400 mt-1 pt-1">
+          <p className="mb-1 pb-1 w-fit text-sm font-bold border-b border-slate-400">
+            Departments
+          </p>
+          <ul>
             {departments?.map((item) => (
               <li className="text-xs">{item.name}</li>
             ))}
