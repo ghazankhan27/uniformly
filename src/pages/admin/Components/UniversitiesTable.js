@@ -26,9 +26,7 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
               <TableHeading />
             </tr>
           </thead>
-          {loading ? (
-            <p>Loading</p>
-          ) : (
+          {data && (
             <tbody>
               {data.map((item, index) => {
                 return (
@@ -43,11 +41,13 @@ export const UniversitiesTable = ({ data, loading, getData }) => {
                       <TableData>{item.address}</TableData>
                       <TableData>{item.contact}</TableData>
                       <TableData>
-                        {item.departments.map((item) => (
-                          <>
-                            {item.name} <br />
-                          </>
-                        ))}
+                        <p>
+                          {item.departments.map((item, index) => (
+                            <span key={index}>
+                              {item.name} <br />
+                            </span>
+                          ))}
+                        </p>
                       </TableData>
                       <TableData>
                         <div>

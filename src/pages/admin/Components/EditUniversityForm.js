@@ -3,7 +3,25 @@ import { updateUniversitySubmit } from "../Api/UpdateUniversitySubmit";
 import { InputField } from "./InputField";
 
 export const EditUniversityForm = ({ id, getData, closeForm }) => {
+  // Setting up states and variables
+
   const [data, setData] = useState(null);
+  const [program, setProgram] = useState("");
+  const [departmentName, setDepartmentName] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState({
+    name: "",
+    programs: [],
+  });
+  const [selectedProgram, setSelectedProgram] = useState({
+    name: "",
+    semesters: [],
+  });
+  const [departmentObjects, setDepartmentObjects] = useState([]);
+  const [semester, setSemester] = useState(1);
+  const [semesterFee, setSemesterFee] = useState(0);
+  const { status, setStatus } = useClearStatus();
+
+  // Getting the data on rendering the edit form
 
   useEffect(() => {
     async function getData() {
@@ -24,25 +42,10 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
     getData();
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  });
-
-  const [program, setProgram] = useState("");
-  const [departmentName, setDepartmentName] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState({
-    name: "",
-    programs: [],
-  });
-  const [selectedProgram, setSelectedProgram] = useState({
-    name: "",
-    semesters: [],
-  });
-  const [departmentObjects, setDepartmentObjects] = useState([]);
-  const [semester, setSemester] = useState(1);
-  const [semesterFee, setSemesterFee] = useState(0);
-
-  const { status, setStatus } = useClearStatus();
+  /**
+   * On getting data set the department object
+   * seperately for editing
+   */
 
   useEffect(() => {
     if (data) {
@@ -50,31 +53,54 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
     }
   }, [data]);
 
+  // Set the first department object as selected if it exists if none is selected
+
   useEffect(() => {
     if (departmentObjects.length > 0 && selectedDepartment.name === "") {
       setSelectedDepartment(departmentObjects[0]);
     }
   }, [departmentObjects]);
 
+  /**
+   * If department is changed, choose the first program
+   * in the list for editing if it exists
+   * else leave it empty
+   */
+
   useEffect(() => {
     if (selectedDepartment.name === "") return;
 
-    if (selectedDepartment.programs.length <= 0) {
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    if (findDepartment.programs.length <= 0) {
       setSelectedProgram({
         name: "",
         semesters: [],
       });
-      setSemester(1);
-      setSemesterFee(0);
     } else {
-      setSelectedProgram(selectedDepartment.programs[0]);
+      setSelectedProgram(findDepartment.programs[0]);
     }
   }, [selectedDepartment]);
+
+  /**
+   * Get the values of the first semester of selected program
+   * for editing
+   */
 
   useEffect(() => {
     if (selectedDepartment.name === "") return;
 
-    const found = selectedDepartment.programs.find(
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    const found = findDepartment.programs.find(
       (item) => item.name === selectedProgram.name
     );
 
@@ -160,7 +186,13 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
 
     if (e.target.value > 14 || e.target.value < 1) return;
 
-    const findProgram = selectedDepartment.programs.find(
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    const findProgram = findDepartment.programs.find(
       (item) => item.name === selectedProgram.name
     );
 
@@ -187,7 +219,11 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
     if (!selectedProgram) return;
     if (e.target.value < 0) return;
 
-    const findProgram = selectedDepartment.programs.find(
+    const department = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    const findProgram = department.programs.find(
       (item) => item.name === selectedProgram.name
     );
 
@@ -196,7 +232,6 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
     );
 
     findSemester.fee = parseInt(e.target.value);
-    console.log(findSemester);
 
     setSemesterFee(e.target.value);
   }
