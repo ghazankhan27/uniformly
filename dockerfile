@@ -1,8 +1,6 @@
 FROM node:16.19
 
-COPY build build
-
-RUN npm install
+COPY build .
 
 RUN npm install -g serve
 
