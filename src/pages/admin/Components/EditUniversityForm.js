@@ -26,7 +26,9 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await fetch(`http://localhost:8000/university/all/${id}`);
+        const res = await fetch(
+          `${process.env.REACT_APP_HOST}/university/all/${id}`
+        );
 
         if (res.status !== 200) throw Error("University does not exists");
 

@@ -13,7 +13,9 @@ export default function University() {
   useEffect(() => {
     async function getData() {
       try {
-        const res = await fetch(`http://localhost:8000/university/all/${id}`);
+        const res = await fetch(
+          `${process.env.REACT_APP_HOST}/university/all/${id}`
+        );
 
         if (res.status !== 200) throw Error("University does not exists");
 
@@ -50,7 +52,7 @@ export default function University() {
               alt={"university"}
               className="border border-slate-200 rounded"
               style={{ width: 400, height: 400, objectFit: "contain" }}
-              src={`http://localhost:8000/${data.image}`}
+              src={`${process.env.REACT_APP_HOST}/${data.image}`}
             />
           </div>
           <div>

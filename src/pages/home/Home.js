@@ -83,7 +83,7 @@ export default function Home() {
               .map((item) => (
                 <UniversityCard
                   title={item.name}
-                  img={`http://localhost:8000/${item.image}`}
+                  img={`${process.env.REACT_APP_HOST}/${item.image}`}
                   location={item.address}
                   id={item.id}
                   departments={item.departments}

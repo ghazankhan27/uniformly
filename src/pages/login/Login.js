@@ -74,7 +74,7 @@ export default function LoginSignup() {
     try {
       const _data = { email: email, password: password };
 
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(`${process.env.REACT_APP_HOST}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

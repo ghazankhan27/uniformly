@@ -30,7 +30,7 @@ export const UniversitiesTable = () => {
                   <TableData>
                     <div className="rounded-full">
                       <img
-                        src={`http://localhost:8000/${item.image}`}
+                        src={`${process.env.REACT_APP_HOST}/${item.image}`}
                         alt={item.name}
                         height={200}
                         width={200}

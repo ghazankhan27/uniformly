@@ -70,7 +70,7 @@ export default function LoginAdmin() {
 
       const _data = { username: username, password: password };
 
-      const res = await fetch("http://localhost:8000/admin/login", {
+      const res = await fetch(`${process.env.REACT_APP_HOST}/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

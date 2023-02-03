@@ -1,7 +1,9 @@
 .bg-image {
-  background-image: url("../../../public/images/library.jpg");
+  background-image: url("../../../public/images/graduation.jpg");
   height: 300px;
   width: 100%;
-  background-size: contain;
+  background-size: cover;
   background-attachment: fixed;
+  background-position: 0px -200px;
+  background-repeat: no-repeat;
 }

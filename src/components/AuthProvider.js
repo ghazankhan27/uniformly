@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         if (!token) throw new Error("No token");
 
         const authorize = await fetch(
-          "http://localhost:8000/auth/authenticate",
+          `${process.env.REACT_APP_HOST}/auth/authenticate`,
           {
             method: "POST",
             headers: {

@@ -1,4 +1,4 @@
-const host = "http://localhost:8000";
+const host = process.env.REACT_APP_HOST;
 
 export const getAllUniversitiesEndpoint = {
   url: `${host}/university/all`,
