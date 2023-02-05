@@ -296,6 +296,26 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
                   placeholder: "hr@cust.edu.pk",
                 }}
               />
+              <InputField
+                label="University Url"
+                options={{
+                  defaultValue: data.url,
+                  required: true,
+                  type: "text",
+                  name: "url",
+                  placeholder: "https://xyzuniversity.edu.pk",
+                }}
+              />
+              <InputField
+                label="Admission Criteria"
+                options={{
+                  defaultValue: data.criteria,
+                  required: true,
+                  type: "text",
+                  name: "criteria",
+                  placeholder: "3.4 GPA",
+                }}
+              />
             </div>
             <div className="grid gap-y-3">
               <Subtitle>Departments</Subtitle>

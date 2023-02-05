@@ -211,6 +211,24 @@ export const AddUniversityForm = ({ getData }) => {
                 }}
               />
               <InputField
+                label="University Url"
+                options={{
+                  required: true,
+                  type: "text",
+                  name: "url",
+                  placeholder: "https://xyzuniversity.edu.pk",
+                }}
+              />
+              <InputField
+                label="Admission Criteria"
+                options={{
+                  required: true,
+                  type: "text",
+                  name: "criteria",
+                  placeholder: "3.4 GPA",
+                }}
+              />
+              <InputField
                 label="Image"
                 options={{
                   type: "file",

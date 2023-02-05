@@ -54,8 +54,29 @@ export default function University() {
               style={{ width: 400, height: 400, objectFit: "contain" }}
               src={`${process.env.REACT_APP_HOST}/${data.image}`}
             />
+            {data.url && (
+              <a
+                style={{ width: 400 }}
+                className="bg-blue-500 text-white text-center shadow-md rounded py-1 hover:opacity-90"
+                href={data.url}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Visit University Website
+              </a>
+            )}
           </div>
           <div>
+            {data.criteria && (
+              <div className="mb-4">
+                <p className="font-bold mb-2 text-lg">Admission Criteria</p>
+                <ul className=" list-disc list-inside">
+                  {data.criteria.split(",").map((item) => (
+                    <li>{item.trim()}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <p className="font-bold mb-2 text-lg">Fee Structure</p>
             <SelectField
               value={filterDepartment}
