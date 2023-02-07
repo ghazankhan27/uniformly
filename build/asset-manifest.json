@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.63cb2587.css",
+    "main.css": "/static/css/main.dde3869c.css",
     "main.js": "/static/js/main.c98325db.js",
-    "static/media/graduation.jpg": "/static/media/graduation.c1ed575b008471ec93d6.jpg",
+    "static/media/graduation.jpg": "/static/media/graduation.c90853a0ffe0c77edb13.jpg",
     "index.html": "/index.html",
-    "main.63cb2587.css.map": "/static/css/main.63cb2587.css.map",
+    "main.dde3869c.css.map": "/static/css/main.dde3869c.css.map",
     "main.c98325db.js.map": "/static/js/main.c98325db.js.map"
   },
   "entrypoints": [
-    "static/css/main.63cb2587.css",
+    "static/css/main.dde3869c.css",
     "static/js/main.c98325db.js"
   ]
 }
