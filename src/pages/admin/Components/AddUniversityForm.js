@@ -13,17 +13,74 @@ export const AddUniversityForm = ({ getData }) => {
   });
   const [selectedProgram, setSelectedProgram] = useState({
     name: "",
+    description: "",
     semesters: [],
   });
   const [departmentObjects, setDepartmentObjects] = useState([]);
+  const [programDescription, setProgramDescription] = useState("");
   const [semester, setSemester] = useState(1);
   const [semesterFee, setSemesterFee] = useState(0);
+
+  // Set the first department object as selected if it exists if none is selected
 
   useEffect(() => {
     if (departmentObjects.length > 0 && selectedDepartment.name === "") {
       setSelectedDepartment(departmentObjects[0]);
     }
   }, [departmentObjects]);
+
+  /**
+   * If department is changed, choose the first program
+   * in the list for editing if it exists
+   * else leave it empty
+   */
+
+  useEffect(() => {
+    if (selectedDepartment.name === "") return;
+
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    if (findDepartment.programs.length <= 0) {
+      setSelectedProgram({
+        name: "",
+        description: "",
+        semesters: [],
+      });
+    } else {
+      setSelectedProgram(findDepartment.programs[0]);
+    }
+  }, [selectedDepartment]);
+
+  /**
+   * Get the values of the first semester of selected program
+   * for editing
+   */
+
+  useEffect(() => {
+    if (selectedDepartment.name === "") return;
+
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    const found = findDepartment.programs.find(
+      (item) => item.name === selectedProgram.name
+    );
+
+    if (!found) return;
+
+    console.log(found);
+
+    setSemester(found.semesters[0].num);
+    setSemesterFee(found.semesters[0].fee);
+    setProgramDescription(found.description);
+  }, [selectedProgram]);
 
   function addDepartmentToList() {
     if (departmentName.length <= 0) return;
@@ -52,6 +109,7 @@ export const AddUniversityForm = ({ getData }) => {
 
     let temp = {
       name: program,
+      description: "",
       semesters: [
         {
           num: 1,
@@ -63,21 +121,23 @@ export const AddUniversityForm = ({ getData }) => {
     found.programs.push(temp);
 
     setProgram("");
-    setSelectedDepartment({ ...found });
+    // setSelectedDepartment({ ...found });
 
-    if (selectedProgram === 0) setSelectedProgram(temp);
+    if (selectedProgram.name === "") setSelectedProgram(temp);
   }
 
-  function deleteProgramFromDepartment(value) {
-    const found = departmentObjects.find(
-      (item) => item.name === selectedDepartment.name
+  function programDescriptionChangeHandler(e) {
+    if (!selectedProgram) return;
+
+    const findProgram = selectedDepartment.programs.find(
+      (item) => item.name === selectedProgram.name
     );
 
-    if (!found) return;
+    if (!findProgram) return;
 
-    found.programs.splice(found.programs.indexOf(value), 1);
+    findProgram.description = e.target.value;
 
-    setSelectedDepartment({ ...found });
+    setProgramDescription(e.target.value);
   }
 
   function onChangeDepartmentHandler(e) {
@@ -101,7 +161,13 @@ export const AddUniversityForm = ({ getData }) => {
 
     if (e.target.value > 14 || e.target.value < 1) return;
 
-    const findProgram = selectedDepartment.programs.find(
+    const findDepartment = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    if (!findDepartment) return;
+
+    const findProgram = findDepartment.programs.find(
       (item) => item.name === selectedProgram.name
     );
 
@@ -128,7 +194,11 @@ export const AddUniversityForm = ({ getData }) => {
     if (!selectedProgram) return;
     if (e.target.value < 0) return;
 
-    const findProgram = selectedDepartment.programs.find(
+    const department = departmentObjects.find(
+      (item) => item.name === selectedDepartment.name
+    );
+
+    const findProgram = department.programs.find(
       (item) => item.name === selectedProgram.name
     );
 
@@ -141,30 +211,23 @@ export const AddUniversityForm = ({ getData }) => {
     setSemesterFee(e.target.value);
   }
 
-  useEffect(() => {
-    if (selectedDepartment.name === "") return;
-
-    if (selectedDepartment.programs.length <= 0) {
-      setSelectedProgram(0);
-      setSemester(1);
-      setSemesterFee(0);
-    } else {
-      setSelectedProgram(selectedDepartment.programs[0]);
-    }
-  }, [selectedDepartment]);
-
-  useEffect(() => {
-    if (selectedDepartment.name === "") return;
-
-    const found = selectedDepartment.programs.find(
-      (item) => item.name === selectedProgram.name
-    );
-
-    if (!found) return;
-
-    setSemester(found.semesters[0].num);
-    setSemesterFee(found.semesters[0].fee);
-  }, [selectedProgram]);
+  function clearAllFields() {
+    setProgram("");
+    setDepartmentName("");
+    setSelectedDepartment({
+      name: "",
+      programs: [],
+    });
+    setSelectedProgram({
+      name: "",
+      description: "",
+      semesters: [],
+    });
+    setDepartmentObjects([]);
+    setProgramDescription("");
+    setSemester(1);
+    setSemesterFee(0);
+  }
 
   return (
     <>
@@ -176,6 +239,7 @@ export const AddUniversityForm = ({ getData }) => {
           const status = await AddUniversitySubmit(e, departmentObjects);
           setStatus(status);
           getData();
+          clearAllFields();
         }}
         className="grid mt-4"
       >
@@ -228,6 +292,22 @@ export const AddUniversityForm = ({ getData }) => {
                   placeholder: "3.4 GPA",
                 }}
               />
+              <div>
+                <p className="text-sm font-semibold text-slate-400">
+                  University Description
+                </p>
+                <textarea
+                  name="uni_description"
+                  required
+                  placeholder="This university is one of the best...."
+                  style={{
+                    width: 400,
+                    height: 100,
+                    resize: "none",
+                    padding: "1px 3px",
+                  }}
+                />
+              </div>
               <InputField
                 label="Image"
                 options={{
@@ -280,6 +360,23 @@ export const AddUniversityForm = ({ getData }) => {
                   options={selectedDepartment?.programs}
                   onChange={(e) => onChangeProgramHandler(e)}
                   value={selectedProgram.name}
+                />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-400">
+                  Program Description
+                </p>
+                <textarea
+                  value={programDescription}
+                  onChange={(e) => programDescriptionChangeHandler(e)}
+                  disabled={selectedProgram.name === ""}
+                  placeholder="This program is...."
+                  style={{
+                    width: 400,
+                    height: 100,
+                    resize: "none",
+                    padding: "1px 3px",
+                  }}
                 />
               </div>
               <InputField

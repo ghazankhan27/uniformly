@@ -14,9 +14,11 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
   });
   const [selectedProgram, setSelectedProgram] = useState({
     name: "",
+    description: "",
     semesters: [],
   });
   const [departmentObjects, setDepartmentObjects] = useState([]);
+  const [programDescription, setProgramDescription] = useState("");
   const [semester, setSemester] = useState(1);
   const [semesterFee, setSemesterFee] = useState(0);
   const { status, setStatus } = useClearStatus();
@@ -33,7 +35,7 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
         if (res.status !== 200) throw Error("University does not exists");
 
         const data = await res.json();
-
+        console.log(data);
         setData(data);
       } catch (err) {
         console.log(err);
@@ -110,6 +112,7 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
 
     setSemester(found.semesters[0].num);
     setSemesterFee(found.semesters[0].fee);
+    setProgramDescription(found.description);
   }, [selectedProgram]);
 
   function addDepartmentToList() {
@@ -155,17 +158,19 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
     if (selectedProgram === 0) setSelectedProgram(temp);
   }
 
-  // function deleteProgramFromDepartment(value) {
-  //   const found = departmentObjects.find(
-  //     (item) => item.name === selectedDepartment.name
-  //   );
+  function programDescriptionChangeHandler(e) {
+    if (!selectedProgram) return;
 
-  //   if (!found) return;
+    const findProgram = selectedDepartment.programs.find(
+      (item) => item.name === selectedProgram.name
+    );
 
-  //   found.programs.splice(found.programs.indexOf(value), 1);
+    if (!findProgram) return;
 
-  //   setSelectedDepartment({ ...found });
-  // }
+    findProgram.description = e.target.value;
+
+    setProgramDescription(e.target.value);
+  }
 
   function onChangeDepartmentHandler(e) {
     const found = departmentObjects.find(
@@ -316,6 +321,23 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
                   placeholder: "3.4 GPA",
                 }}
               />
+              <div>
+                <p className="text-sm font-semibold text-slate-400">
+                  University Description
+                </p>
+                <textarea
+                  defaultValue={data.description}
+                  name="uni_description"
+                  required
+                  placeholder="This university is one of the best...."
+                  style={{
+                    width: 400,
+                    height: 100,
+                    resize: "none",
+                    padding: "1px 3px",
+                  }}
+                />
+              </div>
             </div>
             <div className="grid gap-y-3">
               <Subtitle>Departments</Subtitle>
@@ -361,6 +383,23 @@ export const EditUniversityForm = ({ id, getData, closeForm }) => {
                   options={selectedDepartment?.programs}
                   onChange={(e) => onChangeProgramHandler(e)}
                   value={selectedProgram.name}
+                />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-400">
+                  Program Description
+                </p>
+                <textarea
+                  value={programDescription}
+                  onChange={(e) => programDescriptionChangeHandler(e)}
+                  disabled={selectedProgram.name === ""}
+                  placeholder="This program is...."
+                  style={{
+                    width: 400,
+                    height: 100,
+                    resize: "none",
+                    padding: "1px 3px",
+                  }}
                 />
               </div>
               <InputField

@@ -54,6 +54,7 @@ export default function University() {
               style={{ width: 400, height: 400, objectFit: "contain" }}
               src={`${process.env.REACT_APP_HOST}/${data.image}`}
             />
+            <p className="text-slate-500 text-sm">{data.description}</p>
             {data.url && (
               <a
                 style={{ width: 400 }}
@@ -103,8 +104,12 @@ export default function University() {
                         .filter((item) => item.name === filterProgramme)
                         .map((item) => (
                           <div>
-                            <p className="text-center border-b py-1 text-sm font-bold text-slate-600">
+                            <p className="text-center border-b py-1 mb-4 text-sm font-bold text-slate-600">
                               {item.name}
+                              <br />
+                              <span className=" font-normal">
+                                {item.description}
+                              </span>
                             </p>
                             <table className="w-full table-fixed text-center">
                               <thead>
